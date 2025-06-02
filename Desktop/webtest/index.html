@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&family=Montserrat:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+            --accent: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* ส่วนที่ 1 */
+        .hero {
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .hero.animate-on-scroll {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s ease;
+        }
+
+        .hero.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero .logo {
+            font-size: 64px;
+            font-weight: 300;
+            color: var(--accent);
+        }
+
+        .hero .intro {
+            font-size: 24px;
+            font-weight: 200;
+            color: var(--text-sub);
+            margin-top: 20px;
+        }
+
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 28px;
+            margin-top: 10px;
+            color: var(--accent);
+            text-align: center;
+            /* จัดข้อความกลางสำหรับหัวข้อ */
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            max-width: 1000px;
+            margin: 20px auto;
+            /* เพิ่ม margin ด้านบนและล่าง */
+            overflow: hidden;
+        }
+
+        .slider-container {
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            scroll-behavior: smooth;
+            overflow-x: auto;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e2123;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5c5c5c;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #636d77;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+            /* Chrome */
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            /* จัดเรียงรูปภาพและข้อความแนวตั้ง */
+            align-items: center;
+            /* จัดกึ่งกลางแนวนอน */
+            text-align: center;
+            /* จัดข้อความกึ่งกลาง */
+        }
+
+        .slide img {
+            width: 100%;
+            /* ปรับให้รูปภาพกว้างเต็ม container */
+            max-width: 800px;
+            /* กำหนดขนาดความกว้างสูงสุด (ลองปรับค่าตามต้องการ) */
+            max-height: 400px;
+            /* ปรับความสูงสูงสุด */
+            object-fit: contain;
+            /* หรือ 'cover' ถ้าต้องการให้เต็มกรอบและอาจมีการ crop */
+            border-radius: 7px;
+            margin-bottom: 10px;
+            /* เพิ่มระยะห่างระหว่างรูปภาพและข้อความ */
+        }
+
+        .slide a {
+            color: var(--text-sub);
+            font-size: 16px;
+            /* ปรับขนาดตัวอักษรข้อความ */
+            line-height: 1.4;
+            text-decoration: none;
+            max-width: 90%;
+            /* ลองเพิ่ม max-width เพื่อจำกัดความกว้างของข้อความ */
+            word-break: break-word;
+            /* ป้องกันคำยาว ๆ ล้นขอบ */
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 32px;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1;
+            transition: background 0.3s ease;
+        }
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .slider-btn.left {
+            left: 30px; /* ปรับระยะห่างจากขอบซ้าย */
+        }
+
+        .slider-btn.right {
+            right: 30px; /* ปรับระยะห่างจากขอบขวา */
+        }
+
+        @media (max-width: 768px) {
+            .hero .logo {
+                font-size: 36px;
+            }
+
+            .hero .intro {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            .slide {
+                padding: 15px;
+            }
+
+            .slide img {
+                max-height: 250px;
+                max-width: 90%;
+            }
+
+            .slide a {
+                font-size: 14px;
+            }
+
+            .slider-btn {
+                font-size: 30px;
+                padding: 2px 13px;
+            }
+
+            .slider-btn.left {
+                left: -5px; /* ปรับระยะห่างสำหรับหน้าจอเล็ก */
+            }
+
+            .slider-btn.right {
+                right: -5px; /* ปรับระยะห่างสำหรับหน้าจอเล็ก */
+            }
+        }
+
+        /* ส่วนที่ 3 */
+        .footer {
+            background-color: var(--bg-dark);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 16px;
+            color: var(--text-sub);
+        }
+
+        .footer-note {
+            display: block;
+            margin-top: 30px;
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.1;
+        }
+
+        .footer.animate-on-scroll {
+            opacity: 0;
+            transform: translateZ(-100px);
+            transition: all 1s ease;
+        }
+
+        .footer.show {
+            opacity: 1;
+            transform: translateZ(0);
+        }
+
+        .animate-text {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 1s ease;
+        }
+
+        .animate-text.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* สำหรับการเลื่อนรูปภาพเข้ามาจากด้านหลัง */
+        .slider-wrapper {
+            opacity: 0;
+            transform: translateZ(10px);
+            /* เริ่มจากด้านข้าง */
+            transition: all 1s ease;
+            /* เอฟเฟกต์การเคลื่อนที่ */
+        }
+
+        .slider-wrapper.show {
+            opacity: 1;
+            transform: translateZ(0);
+            /* เคลื่อนเข้ามาในตำแหน่งที่แสดง */
+        }
+
+        .slide {
+            opacity: 0;
+            transform: translateY(50px);
+            /* เริ่มจากด้านข้าง */
+            transition: transform 1s ease, opacity 1s ease;
+        }
+
+        .slide.show {
+            opacity: 1;
+            transform: translateY(0);
+            /* เคลื่อนเข้ามาในตำแหน่งที่แสดง */
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero animate-on-scroll">
+        <div class="logo">Portfolio</div>
+        <div class="intro">ยินดีต้อนรับสู่เว็บไซต์เก็บผลงานของผม!</div>
+    </section>
+
+    <section class="certificates">
+        <h3 class="animate-text">Certificate</h3>
+        <div class="slider-wrapper animate-on-scroll">
+            <button class="slider-btn left" onclick="slideLeft()">&#10094;</button>
+
+            <div class="slider-container" id="slider">
+                <div class="slide">
+                    <img src="png/1.pdf.png" alt="certificate 1">
+                    <a>ผมได้เข้าร่วมงานKU ENGINEERING OPENHOUSE
+                        ได้รับความรู้ในการศึกษาต่อเข้ามหาวิทยาลัยและความสนุกที่ได้เข้าร่วมกิจกรรมที่จัดขึ้นในงาน OPEN
+                        HOUSE </a>
+                </div>
+                <div class="slide"><img src="png/2.pdf.png" alt="certificate 2">
+                    <a>ผมได้เข้าร่วมอบรมของTHE
+                        SANDBOXได้รับความรู้ในการสร้างเกมโดยผ่านการใช้โปรแกรมGAME
+                        MAKERและเข้าใจหลักการทำงานของระบบเกมมากขึ้น</a>
+                </div>
+                <div class="slide"><img src="png/3.png" alt="certificate 3"></div>
+                <div class="slide"><img src="png/4.png" alt="certificate 4"></div>
+                <div class="slide"><img src="png/5.png" alt="certificate 5"></div>
+                <div class="slide"><img src="png/6.png" alt="certificate 6"></div>
+                <div class="slide"><img src="png2/7.png" alt="certificate 7"></div>
+            </div>
+
+            <button class="slider-btn right" onclick="slideRight()">&#10095;</button>
+        </div>
+    </section>
+
+
+    <section class="footer animate-on-scroll">
+        <span class="top-center">ช่องทางการติดต่อ</span>
+        <p class="p1">
+            <i class="fa-solid fa-envelope"></i>
+            tr31544@thanyarat.ac.th
+        </p>
+        <a class="footer-note">
+            เว็บไซต์นี้จัดทำเพื่อให้คณะกรรมการและครูอาจารย์ได้เห็นถึงความสามารถพิเศษของผมในการพิจารณาเพื่อเข้ามหาวิทยาลัย
+        </a>
+    </section>
+
+    <script>
+        const slider = document.getElementById('slider');
+
+        function slideLeft() {
+            slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' });
+        }
+
+        function slideRight() {
+            slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+        }
+
+        const text = document.querySelector('.animate-text');
+        const imageContainer = document.querySelector('.slider-wrapper');
+
+        const observerText = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    text.classList.add('show');
+                } else {
+                    text.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        const section2 = document.querySelector('.certificates');
+        const slides = document.querySelectorAll('.slide');
+        const sliderWrapper = document.querySelector('.slider-wrapper');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    section2.classList.add('show'); // ส่วนของ Certificates จะแสดง
+                    sliderWrapper.classList.add('show'); // สไลด์ wrapper แสดง
+                    slides.forEach(slide => {
+                        slide.classList.add('show'); // ทุกๆ slide จะเคลื่อนไหวเข้ามา
+                    });
+                } else {
+                    section2.classList.remove('show');
+                    sliderWrapper.classList.remove('show');
+                    slides.forEach(slide => {
+                        slide.classList.remove('show');
+                    });
+                }
+            });
+        }, {
+            threshold: 0.3 // เมื่อสไลด์เกือบถึงจุดที่มองเห็น
+        });
+
+        const heroSection = document.querySelector('.hero');
+
+        const heroObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    heroSection.classList.add('show');
+                } else {
+                    heroSection.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        const footerSection = document.querySelector('.footer');
+
+        const footerObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    footerSection.classList.add('show');
+                } else {
+                    footerSection.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        observerText.observe(text);
+        observer.observe(section2);
+        heroObserver.observe(heroSection);
+        footerObserver.observe(footerSection);
+
+    </script>
+</body>
+
+</html>
